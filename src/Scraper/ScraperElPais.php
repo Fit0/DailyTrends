@@ -6,12 +6,12 @@ use App\Entity\Feed;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ScraperElMundo implements NewsScraperInterface
+class ScraperElPais implements NewsScraperInterface
 {
 
     private HttpClientInterface $client;
-    private const URL = 'https://www.elmundo.es';
-    private const NEWSPAPER = 'El Mundo';
+    private const URL = 'https://www.elpais.com';
+    private const NEWSPAPER = 'El País';
 
     public function __construct(HttpClientInterface $client)
     {
@@ -27,7 +27,6 @@ class ScraperElMundo implements NewsScraperInterface
     {
         $url = self::URL;
 
-        //We make the request (including the SSL fix and a User-Agent)
         $response = $this->client->request('GET', $url, [
             'verify_peer' => false,
             'headers' => [
@@ -39,17 +38,12 @@ class ScraperElMundo implements NewsScraperInterface
         $crawler = new Crawler($html);
         $news = [];
 
-        //We attempt to retrieve the containers of the main news articles
-        $crawler->filter('.ue-c-cover-content')->slice(0,6)->each(function (Crawler $node) use (&$news){
+        $crawler->filter('article')->slice(0, 5)->each(function (Crawler $node) use (&$news){
             try {
-                $titleNode = $node->filter('.ue-c-cover-content__headline, h2')->first();
-                $title = $titleNode->text();
-                $link = $node->filter('a')->first()->attr('href');
-                $summary = 'Without summary';
-                $summaryNode = $node->filter('article p')->first();
-                if ($summaryNode->count() > 0) {
-                    $summary = trim($summaryNode->text());
-                }
+                $title = $node->filter('h2')->text();
+                $link = $node->filter('h2 a')->attr('href');
+
+                $summary = $node->filter('p')->count() > 0 ? $node->filter('p')->text() : 'Without summary';
 
                 $feed = new Feed();
                 $feed->setTitle(trim($title));
@@ -58,10 +52,12 @@ class ScraperElMundo implements NewsScraperInterface
                 $feed->setSource($this->getName());
 
                 $news[] = $feed;
+
             } catch (\Exception $e) {
                 // If nothing is found, proceed to the next one
             }
         });
+
         return $news;
     }
 }
