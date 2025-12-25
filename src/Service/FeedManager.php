@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Scraper\NewsScraperInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Feed;
 
 class FeedManager
 {
@@ -17,13 +18,28 @@ class FeedManager
     public function importFeeds(NewsScraperInterface $scraper): int
     {
         $feeds = $scraper->scrape();
+
+        if (empty($feeds)) {
+            return 0;
+        }
+
+        $scrapedUrls = [];
+        foreach ($feeds as $feed) {
+            $scrapedUrls[] = $feed->getUrl();
+        }
+
+        $existingEntities = $this->entityManager->getRepository(Feed::class)
+        ->findBy(['url' => $scrapedUrls]);
+
+        $existingUrlsMap = [];
+        foreach ($existingEntities as $existingFeed) {
+            $existingUrlsMap[$existingFeed->getUrl()] = true;
+        }
+
         $count = 0;
 
         foreach($feeds as $feed) {
-            $existing = $this->entityManager->getRepository($feed::class)
-            ->findOneBy(['url' => $feed->getUrl()]);
-
-            if (!$existing) {
+            if (!isset($existingUrlsMap[$feed->getUrl()])) {
                 $this->entityManager->persist($feed);
                 $count++;
             }

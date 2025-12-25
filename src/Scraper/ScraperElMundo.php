@@ -40,7 +40,7 @@ class ScraperElMundo implements NewsScraperInterface
         $news = [];
 
         //We attempt to retrieve the containers of the main news articles
-        $crawler->filter('.ue-c-cover-content')->slice(0,6)->each(function (Crawler $node) use (&$news){
+        $crawler->filter('.ue-c-cover-content')->slice(0,5)->each(function (Crawler $node) use (&$news){
             try {
                 $titleNode = $node->filter('.ue-c-cover-content__headline, h2')->first();
                 $title = $titleNode->text();
