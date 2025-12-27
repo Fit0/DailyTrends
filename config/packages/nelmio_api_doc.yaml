@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Daily Trends API
+            description: API para la gestión de noticias (feeds) y scrapers automáticos.
+            version: 1.0.0
+    areas: # Define qué rutas documentar
+        path_patterns:
+            - ^/api
