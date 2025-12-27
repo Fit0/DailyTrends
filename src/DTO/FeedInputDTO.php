@@ -15,7 +15,7 @@ class FeedInputDTO
         public string $body,
 
         #[Assert\NotBlank]
-        #[Assert\Url]
+        #[Assert\Url(requireTld: true)]
         #[Assert\Length(max:500)]
         public string $url,
 

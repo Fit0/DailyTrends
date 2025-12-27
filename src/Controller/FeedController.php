@@ -17,7 +17,7 @@ final class FeedController extends AbstractController
     {
     }
 
-    #[Route('', name: 'index', methods: ['GET'])]
+    #[Route('', name: 'list', methods: ['GET'])]
     public function index(): JsonResponse
     {
         return $this->json($this->feedService->getAllFeeds(), context: ['groups' => 'feed:read']);
@@ -29,21 +29,21 @@ final class FeedController extends AbstractController
         return $this->json($this->feedService->getFeed($id), context: ['groups' => 'feed:read']);
     }
 
-    #[Route('', methods: ['POST'])]
+    #[Route('', name:'create', methods: ['POST'])]
     public function create(#[MapRequestPayload] FeedInputDTO $dto): JsonResponse
     {
         $feed = $this->feedService->createFeed($dto);
         return $this->json($feed, Response::HTTP_CREATED, context: ['groups' => 'feed:read']);
     }
 
-    #[Route('/{id}', methods: ['PUT'])]
+    #[Route('/{id}', name: 'update', methods: ['PUT'])]
     public function update(int $id, #[MapRequestPayload] FeedInputDTO $dto): JsonResponse
     {
         $feed = $this->feedService->updateFeed($id, $dto);
         return $this->json($feed, context: ['groups' => 'feed:read']);
     }
 
-    #[Route('/{id}', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(int $id): JsonResponse
     {
         $this->feedService->deleteFeed($id);
