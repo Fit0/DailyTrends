@@ -5,28 +5,36 @@ namespace App\Entity;
 use App\Repository\FeedRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FeedRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Feed
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['feed:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['feed:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['feed:read'])]
     private ?string $body = null;
 
     #[ORM\Column(length: 500)]
+    #[Groups(['feed:read'])]
     private ?string $url = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['feed:read'])]
     private ?string $source = null;
 
     #[ORM\Column]
+    #[Groups(['feed:read'])]
     private ?\DateTimeImmutable $created_at = null;
 
     public function __construct()
