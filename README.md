@@ -1,102 +1,112 @@
-# CASFID – Reto Técnico Backend (DailyTrends)
+# DailyTrends API 🚀
 
-¡Bienvenido/a al reto técnico de CASFID!
+**DailyTrends** es un agregador de noticias de portada de alto rendimiento desarrollado en **Symfony 7.2** y **PHP 8.4**. El sistema automatiza la recolección de noticias de *El País* y *El Mundo* mediante web scraping y proporciona una interfaz API REST robusta para la gestión del contenido.
 
-Este reto evalúa tus habilidades técnicas en Symfony, diseño limpio, scraping y trabajo con MongoDB/MySQL.  
-El proyecto se llama **DailyTrends** y actúa como un agregador de noticias de portada.
+## 🏛️ 1. Arquitectura y Decisiones Técnicas
 
----
+El proyecto ha sido diseñado bajo los estándares de **Arquitectura Limpia** y principios **SOLID** para garantizar su escalabilidad y mantenibilidad.
 
-## Objetivo general
+### Patrones de Diseño Utilizados
 
-El objetivo es desarrollar una API en Symfony 7+ que recoja y gestione noticias de portada de _El País_ y _El Mundo_ mediante **scraping**, y permita gestionarlas (lectura, creación manual, edición y borrado) vía API REST.
+* **Patrón Strategy (Polimorfismo):** Implementado mediante `NewsScraperInterface`. Esto permite que el motor de importación sea independiente de las reglas de cada periódico. Gracias al `TaggedIterator` de Symfony, añadir un nuevo medio es "Plug & Play".
+* **Patrón Repository:** Desacopla la lógica de persistencia de la lógica de negocio.
+* **Data Transfer Objects (DTO):** Se utiliza `FeedInputDTO` para todas las operaciones de entrada, asegurando que la API nunca exponga directamente las entidades de la base de datos.
 
-**Duración estimada total**: 5 días  
-Según indicación del reclutador, realizarás únicamente la Parte 1 (1 día), las Partes 1 y 2 (3 días), o el reto completo (5 días).
+### Componentes Clave
 
----
-
-## Partes del reto
-
-### Parte 1 – Web Scraping y almacenamiento: 1 día
-
-- Obtener las 5 noticias principales de hoy de El País y El Mundo (sin usar RSS).
-- Guardarlas automáticamente en MongoDB/MySQL (con o sin ODM/ORM).
-- Implementar arquitectura limpia (controladores, servicios, repositorios, documentos).
-- Polimorfismo obligatorio: cada periódico tendrá su propio scraper.
-- Manejo de errores robusto.
-
-### Parte 2 – API REST CRUD: +2 días (total: 3 días)
-
-Implementar los endpoints para gestionar noticias (`Feed`):
-
-- `GET /feeds`
-- `GET /feeds/{id}`
-- `POST /feeds`
-- `PUT /feeds/{id}`
-- `DELETE /feeds/{id}`
-
-Requisitos:
-
-- Validación de datos
-- Separación de responsabilidades
-- Buenas prácticas (SOLID, inyección de dependencias, DTOs…)
-
-### Parte 3 – Tests, Documentación y Arquitectura: +2 días (total: 5 días)
-
-- Pruebas unitarias (scrapers, repositorios…)
-- Pruebas funcionales (endpoints)
-- Documentación Swagger/OpenAPI
-- Diagrama simple de arquitectura
-- `README.md` con instrucciones, arquitectura y tests
+* **Scraping Resiliente:** Los scrapers (`ScraperElPais`, `ScraperElMundo`) utilizan `DomCrawler` con manejo de errores detallado para evitar que fallos en un titular detengan toda la importación.
+* **Manejo de Duplicados Eficiente:** En `FeedManager`, se implementa una estrategia de precarga de URLs en memoria para minimizar las consultas SQL (evitando el problema N+1).
+* **Gestión Global de Errores:** Un `ApiExceptionListener` intercepta excepciones para devolver respuestas JSON estandarizadas.
 
 ---
 
-## Entorno Docker incluido
+## 🔄 2. Flujos Críticos del Sistema
 
-El proyecto ya incluye una configuración **Docker lista para usar**, con PHP 8.4, Nginx, Symfony CLI y Node.js.
+### A. Flujo de Extracción (Scraping)
 
-Además, tienes la opción de elegir entre **MySQL** y **MongoDB** que ya están configurados en Docker:
+El comando no conoce los detalles de cada periódico, simplemente ejecuta el contrato definido en la interfaz.
 
-- **MySQL**: Accesible a través de PHPMyAdmin en el puerto 8889
-    - Usuario phpMyAdmin: `root`
-    - Contraseña: `password`
-- **MongoDB**: Accesible a través de Mongo Express en el puerto 8081
-  - Usuario de Mongo Express: `admin`
-  - Contraseña: `pass`
+### B. Validación de Datos (DTO Pipeline)
 
-Solo debes definir las variables de entorno `UID` y `UNAME` según tu propia configuración local.
-De esta forma compartirás los mismos permisos al utilizar Symfony CLI dentro del contenedor de Docker.
-
-
-## Criterios de Evaluación
-
-- **Limpieza y claridad del código**
-- **Modularidad y mantenimiento a largo plazo**
-- **Uso adecuado de Symfony y sus componentes**
-- **Calidad y resiliencia del scraping**
-- **Diseño orientado a objetos y uso de patrones**
-- **Desacoplamiento de componentes**
-- **Cobertura de tests y calidad de la documentación**
+Ningún dato externo llega a la entidad sin antes ser filtrado y validado por la capa de aplicación.
 
 ---
 
-## Recomendación técnica
+## 🛠️ 3. Requisitos y Configuración
 
-Presta especial atención al control de errores, al desacoplamiento y con la vista siempre puesta en el rendimiento y escalabilidad.
+* **Entorno:** Docker con PHP 8.4, Nginx y MySQL.
+* **Puerto local:** `8890`
+
+### Instalación
+
+1. **Levantar el entorno:**
+```bash
+docker-compose up -d
+
+```
+
+
+2. **Instalar dependencias:**
+```bash
+docker-compose exec php composer install
+
+```
+
+
+3. **Configurar base de datos:**
+```bash
+docker-compose exec php bin/console doctrine:database:create
+docker-compose exec php bin/console doctrine:migrations:migrate
+
+```
+
+
 
 ---
 
-## Entrega
+## 🛰️ 4. Documentación de la API (Endpoints)
 
-- Sube el proyecto a un **repositorio público** (GitHub, GitLab, etc.).
-- Realiza **commits descriptivos y frecuentes**, documentando cada avance.
-- Comparte el enlace con el equipo técnico de **CASFID**.
+La API y su documentación interactiva están centralizadas en el puerto **8890**.
+
+### Swagger UI (Documentación Interactiva)
+
+Para visualizar, probar los endpoints y revisar los esquemas de datos:
+👉 **[http://localhost:8890/api/doc](http://localhost:8890/api/doc)**
+
+### Resumen de Endpoints
+
+| Método | Endpoint | Acción | Validación DTO |
+| --- | --- | --- | --- |
+| **GET** | `/api/feeds` | Lista todas las noticias. | No |
+| **GET** | `/api/feeds/{id}` | Detalle de una noticia. | No |
+| **POST** | `/api/feeds` | Creación manual. | **Sí** |
+| **PUT** | `/api/feeds/{id}` | Actualización completa. | **Sí** |
+| **DELETE** | `/api/feeds/{id}` | Eliminación física. | No |
 
 ---
 
-¡Buena suerte!
+## 🤖 5. Comando de Importación (CLI)
 
-Esperamos que disfrutes el reto y lo uses como una oportunidad para mostrar tu manera de trabajar, tu estilo de código y tu pensamiento técnico.
+Para ejecutar el scraping automático y agregar noticias en la base de datos:
 
-¡Gracias por tu interés en **CASFID**!
+```bash
+docker-compose exec php bin/console app:import-news
+
+```
+
+---
+
+## 🧪 6. Estrategia de Testing
+
+Se ha implementado una suite de pruebas con **PHPUnit** cubriendo el 100% de la lógica crítica:
+
+* **Unit Tests (`FeedManagerTest`):** Valida la lógica de negocio y la detección de duplicados mediante Mocks.
+* **Integration Tests (`ScraperElPaisTest`):** Verifica la extracción contra fixtures HTML locales, evitando la fragilidad de depender de la red externa.
+* **Functional Tests (`FeedControllerTest`):** Pruebas E2E del ciclo de vida CRUD y respuestas del `ApiExceptionListener`.
+
+**Ejecución de tests:**
+
+```bash
+docker-compose exec php bin/phpunit
+
+```
