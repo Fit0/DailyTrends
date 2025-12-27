@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Projects\Prueba Tecnica Casfid\DailyTrends\phpunit.dist.xml" tests="7" assertions="24" errors="0" failures="0" skipped="0" time="1.504270">
+    <testsuite name="Project Test Suite" tests="7" assertions="24" errors="0" failures="0" skipped="0" time="1.504270">
+      <testsuite name="App\Tests\Controller\FeedControllerTest" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Controller\FeedControllerTest.php" tests="3" assertions="8" errors="0" failures="0" skipped="0" time="1.419016">
+        <testcase name="testGetAllFeeds" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Controller\FeedControllerTest.php" line="23" class="App\Tests\Controller\FeedControllerTest" classname="App.Tests.Controller.FeedControllerTest" assertions="2" time="0.929257"/>
+        <testcase name="testGetNonExistentFeedReturnsJsonError" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Controller\FeedControllerTest.php" line="39" class="App\Tests\Controller\FeedControllerTest" classname="App.Tests.Controller.FeedControllerTest" assertions="4" time="0.190794"/>
+        <testcase name="testCreateAndDeleteFeed" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Controller\FeedControllerTest.php" line="55" class="App\Tests\Controller\FeedControllerTest" classname="App.Tests.Controller.FeedControllerTest" assertions="2" time="0.298966"/>
+      </testsuite>
+      <testsuite name="App\Tests\Scraper\ScraperElPaisTest" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Scraper\ScraperElPaisTest.php" tests="1" assertions="5" errors="0" failures="0" skipped="0" time="0.067726">
+        <testcase name="testScrapeExtractsNewsCorrectly" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Scraper\ScraperElPaisTest.php" line="16" class="App\Tests\Scraper\ScraperElPaisTest" classname="App.Tests.Scraper.ScraperElPaisTest" assertions="5" time="0.067726"/>
+      </testsuite>
+      <testsuite name="App\Tests\Service\FeedManagerTest" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Service\FeedManagerTest.php" tests="3" assertions="11" errors="0" failures="0" skipped="0" time="0.017528">
+        <testcase name="testImportFeedsDoNothingIfScraperReturnsEmpty" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Service\FeedManagerTest.php" line="38" class="App\Tests\Service\FeedManagerTest" classname="App.Tests.Service.FeedManagerTest" assertions="2" time="0.009893"/>
+        <testcase name="testImportFeedsFiltersDuplicatesAndPersistsOnlyNew" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Service\FeedManagerTest.php" line="56" class="App\Tests\Service\FeedManagerTest" classname="App.Tests.Service.FeedManagerTest" assertions="6" time="0.004338"/>
+        <testcase name="testImportFeedsPersistsAllIfNoneExist" file="C:\Projects\Prueba Tecnica Casfid\DailyTrends\tests\Service\FeedManagerTest.php" line="89" class="App\Tests\Service\FeedManagerTest" classname="App.Tests.Service.FeedManagerTest" assertions="3" time="0.003297"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
