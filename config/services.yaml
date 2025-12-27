@@ -27,3 +27,6 @@ services:
     App\Command\ImportNewsCommand:
         arguments:
             $scrapers: !tagged_iterator app.news_scraper
+    App\EventListener\ApiExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

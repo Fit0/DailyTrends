@@ -1,0 +1,103 @@
+{
+	"info": {
+		"name": "DailyTrends API - Casfid Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET All Feeds",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8890/api/feeds",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8890",
+					"path": ["api", "feeds"]
+				},
+				"description": "Obtiene todas las noticias (scrapeadas y manuales)."
+			},
+			"response": []
+		},
+		{
+			"name": "GET Single Feed",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8890/api/feeds/1",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8890",
+					"path": ["api", "feeds", "1"]
+				},
+				"description": "Obtiene el detalle de una noticia por ID."
+			},
+			"response": []
+		},
+		{
+			"name": "POST Create Feed",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Noticia Creada desde Postman\",\n    \"body\": \"Este es el contenido de prueba para la Parte 2 del reto técnico.\",\n    \"url\": \"https://google.com/test-news\",\n    \"source\": \"Manual\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8890/api/feeds",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8890",
+					"path": ["api", "feeds"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Update Feed",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Título Actualizado\",\n    \"body\": \"Contenido actualizado correctamente.\",\n    \"url\": \"https://google.com/test-news-updated\",\n    \"source\": \"Manual\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8890/api/feeds/1",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8890",
+					"path": ["api", "feeds", "1"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Feed",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8890/api/feeds/1",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8890",
+					"path": ["api", "feeds", "1"]
+				}
+			},
+			"response": []
+		}
+	]
+}
