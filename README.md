@@ -39,24 +39,28 @@ Ningún dato externo llega a la entidad sin antes ser filtrado y validado por la
 
 ### Instalación
 
-1. **Levantar el entorno:**
+1. **Clonar el proyecto:**
+```bash
+git clone https://github.com/Fit0/DailyTrends.git casfid-technical-test
+
+```
+
+2. **Levantar el entorno:**
 ```bash
 docker-compose up -d
 
 ```
 
-
-2. **Instalar dependencias:**
+3. **Instalar dependencias:**
 ```bash
-docker-compose exec php composer install
+docker-compose exec server_casfid_technical_test composer install
 
 ```
 
 
-3. **Configurar base de datos:**
+4. **Configurar base de datos:**
 ```bash
-docker-compose exec php bin/console doctrine:database:create
-docker-compose exec php bin/console doctrine:migrations:migrate
+docker-compose exec server_casfid_technical_test php bin/console doctrine:migrations:migrate
 
 ```
 
@@ -90,7 +94,7 @@ Para visualizar, probar los endpoints y revisar los esquemas de datos:
 Para ejecutar el scraping automático y agregar noticias en la base de datos:
 
 ```bash
-docker-compose exec php bin/console app:import-news
+docker-compose exec server_casfid_technical_test php bin/console app:import-news
 
 ```
 
@@ -106,7 +110,14 @@ Se ha implementado una suite de pruebas con **PHPUnit** cubriendo el 100% de la 
 
 **Ejecución de tests:**
 
+**Configurar base de datos:**
 ```bash
-docker-compose exec php bin/phpunit
+docker-compose exec server_casfid_technical_test php bin/console doctrine:database:create --env=test
+docker-compose exec server_casfid_technical_test php bin/console doctrine:migrations:migrate --env=test
+
+```
+
+```bash
+docker-compose exec server_casfid_technical_test php bin/phpunit
 
 ```
