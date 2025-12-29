@@ -108,15 +108,14 @@ Se ha implementado una suite de pruebas con **PHPUnit** cubriendo el 100% de la 
 * **Integration Tests (`ScraperElPaisTest`):** Verifica la extracción contra fixtures HTML locales, evitando la fragilidad de depender de la red externa.
 * **Functional Tests (`FeedControllerTest`):** Pruebas E2E del ciclo de vida CRUD y respuestas del `ApiExceptionListener`.
 
-**Ejecución de tests:**
-
-**Configurar base de datos:**
+**Configurar base de datos para los tests:**
 ```bash
 docker-compose exec server_casfid_technical_test php bin/console doctrine:database:create --env=test
 docker-compose exec server_casfid_technical_test php bin/console doctrine:migrations:migrate --env=test
 
 ```
 
+**Ejecución de tests:**
 ```bash
 docker-compose exec server_casfid_technical_test php bin/phpunit
 
